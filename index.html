@@ -10,7 +10,7 @@
 <body>
     <div class="wrapper">
         <!-- search block  -->
-        <div class="wrap-search place-center">
+        <div class="wrap-search place-center dis-none">
             <div class="block-search">
                 <div class="search__title">Weather App</div>
                 <div class="h-line"></div>
@@ -19,7 +19,40 @@
             </div>
         </div>
         <!-- endblock search  -->
-
+        
+        <!-- result view -->    
+        <div class="wrap-result place-center">
+            <div class="block-result">
+                <div class="result-header">
+                    <div class="header__title">Weather</div>
+                    <img src="img/search.svg" width="24px" height="24px" alt="search">
+                </div>
+                <div class="degree-view">
+                    <img src="img/rainy.svg" width="140px" alt="sunny">
+                    <p class="degree">32°C</p>
+                    <p class="city">London, UK</p>
+                    <p class="position">Sunny</p>
+                </div>
+                <div class="details">
+                    <div class="wind box-details">
+                        <p class="details__num">78</p>
+                        <img src="img/windy.svg" width="24px" alt="windy">
+                        <p class="details__text">Wind Flow</p>
+                    </div>
+                    <div class="feels_like box-details">
+                        <p class="details__num">52</p>
+                        <img src="img/windy.svg" width="24px" alt="feels like">
+                        <p class="details__text">Feels Like</p>
+                    </div>
+                    <div class="humidity box-details">
+                        <p class="details__num">89</p>
+                        <img src="img/windy.svg" width="24px" alt="humidity">
+                        <p class="details__text">Humidity</p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <!-- endview result -->
     </div>
     <script src="script.js"></script>
 </body>

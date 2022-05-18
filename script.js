@@ -13,8 +13,4 @@ async function getUser() {
     console.log(info['nat']);
 }
 
-function leySay() {
-    let a = 10;
-}
-
 getUser();
