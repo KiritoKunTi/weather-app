@@ -31,6 +31,10 @@ button, input {
 .dis-none {
     display: none;
 }
+.flex {
+    display: flex;
+    flex-direction: column;
+}
 .wrapper {
 }
 .wrap-search {
