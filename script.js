@@ -9,12 +9,13 @@ const form = document.querySelector('.form');
 
 
 let database = {
-    city: 'London',
+    city: 'Almaty',
     windSpeed: 0,
     feelslike: 0,
     humidity: 0,
     temperature: 0,
-    country: 'United Kingdom'
+    country: 'Kazakhstan',
+    name: '',
 };
 
 async function fetchData() {
@@ -22,9 +23,10 @@ async function fetchData() {
     // Parsing it to JSON format
     const data = await response.json();
 
-    const { 
+
+    const {
         current: { feelslike, wind_speed: windSpeed, humidity, temperature, weather_descriptions: description },
-        location: { country },
+        location: { country, name },
     } = data;
 
     database = {
@@ -35,26 +37,32 @@ async function fetchData() {
         description,
         temperature,
         country,
+        name
+    };
+    renderComponent();
+
+    const goBack = document.getElementById('go_back');
+    const goToSearchPage = () => {
+        node.classList.add('dis-none');
+        searchForm.classList.remove('dis-none');
     };
 
-    console.log(data);
-
-    renderComponent();
+    goBack.addEventListener('click', goToSearchPage);
 };
 
 const markup = () => {
 
-    const { city, windSpeed, feelslike, humidity, temperature, country, description } = database;
+    const { windSpeed, feelslike, humidity, temperature, country, description, name } = database;
 
     return `
     <div class="result-header">
         <div class="header__title">Weather</div>
-        <img src="img/search.svg" width="24px" height="24px" alt="search">
+        <img src="img/search.svg" width="24px" height="24px" alt="search" id="go_back">
     </div>
     <div class="degree-view">
         <img src="img/cloudy.svg" width="140px" alt="sunny">
         <p class="degree js-fill">${temperature}°C</p>
-        <p class="city js-fill">${city}, ${country}</p>
+        <p class="city js-fill">${name}, ${country}</p>
         <p class="position js-fill">${description}</p>
     </div>
     <div class="details">
@@ -84,7 +92,7 @@ const renderComponent = () => {
 const showData = () => {
     node.classList.remove('dis-none');
     searchForm.classList.add('dis-none');
-};  
+};
 
 const handleInput = (e) => {
     database = {
@@ -95,8 +103,8 @@ const handleInput = (e) => {
 
 const handleSumbit = (e) => {
     e.preventDefault();
-    console.log(database.city);
     fetchData();
+    searchInput.value = '';
 };
 
 searchBtn.addEventListener('click', showData);
