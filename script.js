@@ -9,7 +9,7 @@ const form = document.querySelector('.form');
 
 
 let database = {
-    city: 'Almaty',
+    city: 'Astana',
     windSpeed: 0,
     feelslike: 0,
     humidity: 0,
@@ -19,35 +19,61 @@ let database = {
 };
 
 async function fetchData() {
-    const response = await fetch(`${url}&query=${database.city}`);
-    // Parsing it to JSON format
-    const data = await response.json();
+    try {
+        const query = localStorage.getItem('query') || database.city;
+        const response = await fetch(`${url}&query=${query}`);
 
+        // Parsing it to JSON format
+        const data = await response.json();
 
-    const {
-        current: { feelslike, wind_speed: windSpeed, humidity, temperature, weather_descriptions: description },
-        location: { country, name },
-    } = data;
+        const {
+            current: { feelslike, wind_speed: windSpeed, humidity, temperature, weather_descriptions: description },
+            location: { country, name },
+        } = data;
 
-    database = {
-        ...database,
-        windSpeed,
-        feelslike,
-        humidity,
-        description,
-        temperature,
-        country,
-        name
-    };
-    renderComponent();
+        database = {
+            ...database,
+            windSpeed,
+            feelslike,
+            humidity,
+            description,
+            temperature,
+            country,
+            name
+        };
+        renderComponent();
 
-    const goBack = document.getElementById('go_back');
-    const goToSearchPage = () => {
-        node.classList.add('dis-none');
-        searchForm.classList.remove('dis-none');
-    };
+        const goBack = document.getElementById('go_back');
+        const goToSearchPage = () => {
+            node.classList.add('dis-none');
+            searchForm.classList.remove('dis-none');
+        };
 
-    goBack.addEventListener('click', goToSearchPage);
+        goBack.addEventListener('click', goToSearchPage);
+    } catch(err) {
+        console.log(err);
+    }
+};
+
+const getImage = (description) => {
+    const value = description[0].toLowerCase();
+
+    switch (value) {
+        case 'partly cloudy':
+            return "partly cloudy";
+        case "cloud":
+            return "cloudy";
+        case "snow":
+            return "snowy";
+        case "rain":
+            return "rainy";
+        case "sunny":
+            return "sunny";
+        case "patchy rain possible":
+            return "flash";
+        default:
+            return "moon";
+    }
 };
 
 const markup = () => {
@@ -60,7 +86,7 @@ const markup = () => {
         <img src="img/search.svg" width="24px" height="24px" alt="search" id="go_back">
     </div>
     <div class="degree-view">
-        <img src="img/cloudy.svg" width="140px" alt="sunny">
+        <img src="img/icons/${getImage(description)}.svg" width="140px" alt="sunny">
         <p class="degree js-fill">${temperature}°C</p>
         <p class="city js-fill">${name}, ${country}</p>
         <p class="position js-fill">${description}</p>
@@ -102,7 +128,12 @@ const handleInput = (e) => {
 };
 
 const handleSumbit = (e) => {
+    const value = database.city;
+
     e.preventDefault();
+    if (!value) return null;
+    localStorage.setItem('query', value)
+
     fetchData();
     searchInput.value = '';
 };
